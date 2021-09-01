@@ -51,16 +51,16 @@
 
                         <ValidationProvider
                             v-slot="{ errors }"
-                            name="Password"
+                            name="created_at"
                             rules="required"
                         >
                             <v-text-field
-                                id="password"
-                                label="Search Password *"
-                                name="password"
+                                id="created_at"
+                                label="Search created_at *"
+                                name="created_at"
                                 prepend-icon="mdi-lock"
-                                type="password"
-                                v-model="user.password"
+                                type="created_at"
+                                v-model="user.created_at"
                                 :error-messages="errors"
                                 v-on:keyup.enter="onClickSearchButton"
                                 outlined
@@ -102,10 +102,11 @@ export default {
             user: {
                 name: "",
                 email: "",
-                password: ""
+                created_at: ""
             },
             isBtnLoading: false,
-            errorEmail: ""
+            errorEmail: "",
+            answers: []
         };
     },
     created() {
@@ -115,7 +116,7 @@ export default {
     },
     computed: {
         isSearchBtnDisabled() {
-            if (!this.user.name || !this.user.password || !this.user.email) {
+            if (!this.user.name || !this.user.created_at || !this.user.email) {
                 return true;
             } else {
                 return false;
@@ -130,13 +131,16 @@ export default {
 
             this.isBtnLoading = true;
 
-            await axios.post("/api/users", this.user);
-            this.$router.push("/users")
-            .catch(function (error) {
-            })
-            .finally(() => {
-                this.isBtnLoading = false;
+            await axios.get("/api/search", this.user).then(res => {
+                this.answers = res.data;
             });
+            console.log(this.answers);
+            // this.$router.push("/users")
+            // .catch(function (error) {
+            // })
+            // .finally(() => {
+            //     this.isBtnLoading = false;
+            // });
         }
     }
 };

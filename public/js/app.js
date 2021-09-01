@@ -2496,10 +2496,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       user: {
         name: "",
         email: "",
-        password: ""
+        created_at: ""
       },
       isBtnLoading: false,
-      errorEmail: ""
+      errorEmail: "",
+      answers: []
     };
   },
   created: function created() {
@@ -2511,7 +2512,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   computed: {
     isSearchBtnDisabled: function isSearchBtnDisabled() {
-      if (!this.user.name || !this.user.password || !this.user.email) {
+      if (!this.user.name || !this.user.created_at || !this.user.email) {
         return true;
       } else {
         return false;
@@ -2537,12 +2538,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 2:
                 _this2.isBtnLoading = true;
                 _context.next = 5;
-                return axios.post("/api/users", _this2.user);
+                return axios.get("/api/search", _this2.user).then(function (res) {
+                  _this2.answers = res.data;
+                });
 
               case 5:
-                _this2.$router.push("/users")["catch"](function (error) {})["finally"](function () {
-                  _this2.isBtnLoading = false;
-                });
+                console.log(_this2.answers); // this.$router.push("/users")
+                // .catch(function (error) {
+                // })
+                // .finally(() => {
+                //     this.isBtnLoading = false;
+                // });
 
               case 6:
               case "end":
@@ -28817,7 +28823,7 @@ var render = function() {
                       }),
                       _vm._v(" "),
                       _c("ValidationProvider", {
-                        attrs: { name: "Password", rules: "required" },
+                        attrs: { name: "created_at", rules: "required" },
                         scopedSlots: _vm._u([
                           {
                             key: "default",
@@ -28826,11 +28832,11 @@ var render = function() {
                               return [
                                 _c("v-text-field", {
                                   attrs: {
-                                    id: "password",
-                                    label: "Search Password *",
-                                    name: "password",
+                                    id: "created_at",
+                                    label: "Search created_at *",
+                                    name: "created_at",
                                     "prepend-icon": "mdi-lock",
-                                    type: "password",
+                                    type: "created_at",
                                     "error-messages": errors,
                                     outlined: "",
                                     required: "",
@@ -28857,11 +28863,11 @@ var render = function() {
                                     }
                                   },
                                   model: {
-                                    value: _vm.user.password,
+                                    value: _vm.user.created_at,
                                     callback: function($$v) {
-                                      _vm.$set(_vm.user, "password", $$v)
+                                      _vm.$set(_vm.user, "created_at", $$v)
                                     },
-                                    expression: "user.password"
+                                    expression: "user.created_at"
                                   }
                                 })
                               ]

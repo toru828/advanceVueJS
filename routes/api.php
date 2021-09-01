@@ -17,7 +17,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resources([
         'users' => Api\UsersController::class
     ]);
-
+    Route::get('/search','SearchUsersController@search')->name('api.search');
 });
 
 Route::post('login', 'Auth\Api\LoginController@login')->name('api.login');
