@@ -110,7 +110,7 @@ export default {
         };
     },
     created() {
-        axios.get("/api/users").then(res => {
+        axios.get("/api/search").then(res => {
             this.users = res.data;
         });
     },

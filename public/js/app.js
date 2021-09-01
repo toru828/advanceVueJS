@@ -2506,7 +2506,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   created: function created() {
     var _this = this;
 
-    axios.get("/api/users").then(function (res) {
+    axios.get("/api/search").then(function (res) {
       _this.users = res.data;
     });
   },
@@ -2738,6 +2738,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   created: function created() {
     this.getUsersList();
+    console.log(this.users);
   },
   methods: {
     getUsersList: function getUsersList() {

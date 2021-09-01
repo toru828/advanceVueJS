@@ -154,6 +154,7 @@ export default {
     },
     created() {
         this.getUsersList();
+        console.log(this.users);
     },
     methods: {
         async getUsersList() {

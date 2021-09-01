@@ -14,7 +14,10 @@ class UsersController extends Controller
 
     public function index(Request $request)
     {
-        $users = User::all();
+        $query = User::query();
+
+        $users = $query->orderBy('id','desc')->paginate(10);
+        // $users = User::all();
         return response()->json($users);
     }
 
