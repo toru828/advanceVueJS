@@ -15,21 +15,7 @@
                     </v-btn>
                 </v-tabs>
             </v-col>
-            <v-col cols="2" class="ml-0 pl-0">
-                <v-tabs background-color="#39b704" right dark>
-                    <v-btn color="green">
-                        <router-link
-                            class="white--text"
-                            style="text-decoration: none"
-                            :to="{
-                                name: 'SearchForm'
-                            }"
-                        >Search User
-                        </router-link>
-                    </v-btn>
-                </v-tabs>
-            </v-col>
-            <v-col cols="8">
+            <v-col cols="10">
                 <v-tabs background-color="#39b704" right dark>
                     <v-tab @click="logout">
                         <v-icon>mdi-logout</v-icon> Logout
@@ -154,7 +140,6 @@ export default {
     },
     created() {
         this.getUsersList();
-        console.log(this.users);
     },
     methods: {
         async getUsersList() {
