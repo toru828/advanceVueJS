@@ -14,8 +14,20 @@ class UsersController extends Controller
 
     public function index(Request $request)
     {
-        $users = User::all();
+
+        // $requestData = $request->all();
+        // dd($requestData);
+        // $data = $this->userService->getList($requestData);
+        // return $this->success($data);
+
+        
+        $query = User::query();
+
+        $users = $query->orderBy('id','desc')->paginate(1);
+        // dd($users);
+        // $users = User::all();
         return response()->json($users);
+
     }
 
     /**
@@ -74,7 +86,6 @@ class UsersController extends Controller
         $params = $request->only('name', 'email', 'password');
         $params['password'] = bcrypt($params['password']);
         $data = User::create($params);
-
         return response()->json($data);
     }
 
@@ -87,8 +98,8 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
+        // dd($user);
         $data = $user->delete();
-
         return response()->json($data);
     }
 

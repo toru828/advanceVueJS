@@ -17,7 +17,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resources([
         'users' => Api\UsersController::class
     ]);
-
 });
 
 Route::post('login', 'Auth\Api\LoginController@login')->name('api.login');

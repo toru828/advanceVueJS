@@ -32,6 +32,7 @@
         "js-cookie": "^2.2.1",
         "sweetalert2": "^11.0.16",
         "vee-validate": "^3.4.11",
+        "vuejs-paginate": "^2.1.0",
         "vuetify": "^2.5.8",
         "vuex-persistedstate": "^4.0.0"
     }

@@ -4,7 +4,6 @@ import Login from '@/components/Login'
 import UsersList from '@/components/user/UsersList'
 import EditForm from '@/components/user/EditForm'
 import AddForm from '@/components/user/AddForm';
-import SearchForm from '@/components/user/SearchForm';
 
 Vue.use(Router)
 
@@ -30,10 +29,5 @@ export default new Router({
       name: 'AddForm',
       component: AddForm
     },
-    {
-      path: '/search',
-      name: 'SearchForm',
-      component: SearchForm
-    }
   ]
 })
