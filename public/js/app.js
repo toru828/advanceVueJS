@@ -2548,7 +2548,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context.next = 2;
                 return axios.get("/api/users").then(function (res) {
-                  _this.users = res.data;
+                  _this.users = res.data.data;
                 });
 
               case 2:

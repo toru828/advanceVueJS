@@ -144,7 +144,7 @@ export default {
     methods: {
         async getUsersList() {
             await axios.get("/api/users").then(res => {
-                this.users = res.data;
+                this.users = res.data.data;
             });
         },
         logout() {
