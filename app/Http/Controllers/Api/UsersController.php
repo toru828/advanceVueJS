@@ -14,17 +14,17 @@ class UsersController extends Controller
 
     public function index(Request $request)
     {
-        // $requestData = $request->all();
-        // dd($requestData);
-        // $data = $this->userService->getList($requestData);
-        // return $this->success($data);
+        $requestData = $request->all();
+        dd($requestData);
+        $data = $this->userService->getList($requestData);
+        return $this->success($data);
         // if (empty($requestData['name']) && empty($requestData['email']) && empty($requestData['created_at'])) {
             
-        $query = User::query();
+        // $query = User::query();
 
-        $users = $query->orderBy('id','desc')->paginate(25);
-        // $users = User::all();
-        return response()->json($users);
+        // $users = $query->orderBy('id','desc')->paginate(25);
+        // // $users = User::all();
+        // return response()->json($users);
         // } else {
         //     $users = User::select('*');
         //     dd($users);
