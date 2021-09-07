@@ -216,10 +216,11 @@ export default {
             }
 
             this.isBtnLoading = true;
-            // console.log(this.user.name);
+            console.log(this.user.name);
 
             await axios.get("/api/users", this.user)
             .then(res => {
+                
                 this.users = res.data.data;
                 console.log(res.data.data);
             })

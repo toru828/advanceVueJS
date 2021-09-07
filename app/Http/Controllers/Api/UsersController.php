@@ -24,15 +24,15 @@ class UsersController extends Controller
             $users = User::select('*');
             // dd($users);
             if(isset($requestData['name']) && $requestData['name']) {
-                $users = $users->where('name', 'LIKE', '%' . $request['name']. '%');
+                $users = $users->where('name', 'LIKE', '%' . $requestData['name']. '%');
             }
             if(isset($requestData['email']) && $requestData['email']) {
-                $users = $users->where('email', 'LIKE', '%' . $request['email']. '%');
+                $users = $users->where('email', 'LIKE', '%' . $requestData['email']. '%');
             }
             if(isset($requestData['created_at']) && $requestData['created_at']) {
-                $users = $users->where('created_at', 'LIKE', '%' . $request['created_at']. '%');
+                $users = $users->where('created_at', 'LIKE', '%' . $requestData['created_at']. '%');
             }
-            return response()->json($users);
+            return response()->json($users->paginate(25));
         } else {
             $query = User::query();
 
@@ -63,7 +63,6 @@ class UsersController extends Controller
         //     }
         //     return response()->json($users);
         // }
-
     }
 
     /**

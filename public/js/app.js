@@ -2622,9 +2622,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context.abrupt("return", false);
 
               case 2:
-                _this.isBtnLoading = true; // console.log(this.user.name);
-
-                _context.next = 5;
+                _this.isBtnLoading = true;
+                console.log(_this.user.name);
+                _context.next = 6;
                 return axios.get("/api/users", _this.user).then(function (res) {
                   _this.users = res.data.data;
                   console.log(res.data.data);
@@ -2632,7 +2632,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this.isBtnLoading = false;
                 });
 
-              case 5:
+              case 6:
               case "end":
                 return _context.stop();
             }
