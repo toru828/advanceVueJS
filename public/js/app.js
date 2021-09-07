@@ -2580,6 +2580,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2587,9 +2588,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   components: {},
   data: function data() {
     return {
-      name: "",
-      email: "",
-      created_at: "",
+      user: {
+        name: "",
+        email: "",
+        created_at: ""
+      },
       isBtnLoading: false,
       errorEmail: "",
       users: [],
@@ -2619,15 +2622,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context.abrupt("return", false);
 
               case 2:
-                _this.isBtnLoading = true;
+                _this.isBtnLoading = true; // console.log(this.user.name);
+
                 _context.next = 5;
-                return axios.get("/api/users", {
-                  name: _this.name,
-                  email: _this.email,
-                  created_at: _this.created_at
-                }).then(function (res) {
+                return axios.get("/api/users", _this.user).then(function (res) {
                   _this.users = res.data.data;
-                  console.log(res);
+                  console.log(res.data.data);
                 })["catch"](function (error) {})["finally"](function () {
                   _this.isBtnLoading = false;
                 });
@@ -2710,7 +2710,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   computed: {
     isSearchBtnDisabled: function isSearchBtnDisabled() {
-      if (!this.name && !this.created_at && !this.email) {
+      if (!this.user.name && !this.user.created_at && !this.user.email) {
         return true;
       } else {
         return false;
@@ -28652,11 +28652,11 @@ var render = function() {
                           }
                         },
                         model: {
-                          value: _vm.name,
+                          value: _vm.user.name,
                           callback: function($$v) {
-                            _vm.name = $$v
+                            _vm.$set(_vm.user, "name", $$v)
                           },
-                          expression: "name"
+                          expression: "user.name"
                         }
                       }),
                       _vm._v(" "),
@@ -28689,20 +28689,21 @@ var render = function() {
                           }
                         },
                         model: {
-                          value: _vm.email,
+                          value: _vm.user.email,
                           callback: function($$v) {
-                            _vm.email = $$v
+                            _vm.$set(_vm.user, "email", $$v)
                           },
-                          expression: "email"
+                          expression: "user.email"
                         }
                       }),
                       _vm._v(" "),
                       _c("v-text-field", {
+                        staticClass: "pt-8",
                         attrs: {
                           id: "created_at",
                           label: "Search Created date *",
                           name: "created_at",
-                          "prepend-icon": "mdi-lock",
+                          "prepend-icon": "mdi-calendar",
                           outlined: "",
                           type: "date",
                           autocomplete: "off"
@@ -28728,11 +28729,11 @@ var render = function() {
                           }
                         },
                         model: {
-                          value: _vm.created_at,
+                          value: _vm.user.created_at,
                           callback: function($$v) {
-                            _vm.created_at = $$v
+                            _vm.$set(_vm.user, "created_at", $$v)
                           },
-                          expression: "created_at"
+                          expression: "user.created_at"
                         }
                       })
                     ],

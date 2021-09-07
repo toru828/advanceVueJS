@@ -14,10 +14,34 @@ class UsersController extends Controller
 
     public function index(Request $request)
     {
-        $requestData = $request->all();
-        dd($requestData);
-        $data = $this->userService->getList($requestData);
-        return $this->success($data);
+        $requestData = $request->only('name', 'email', 'created_at');
+        // dd($requestData);
+        // $data = $this->userService->getList($requestData);
+        // return $this->success($data);
+
+
+        if ((isset($requestData['name']) && $requestData['name']) || (isset($requestData['email']) && $requestData['email']) || (isset($requestData['created_at']) && $requestData['created_at'])) {
+            $users = User::select('*');
+            // dd($users);
+            if(isset($requestData['name']) && $requestData['name']) {
+                $users = $users->where('name', 'LIKE', '%' . $request['name']. '%');
+            }
+            if(isset($requestData['email']) && $requestData['email']) {
+                $users = $users->where('email', 'LIKE', '%' . $request['email']. '%');
+            }
+            if(isset($requestData['created_at']) && $requestData['created_at']) {
+                $users = $users->where('created_at', 'LIKE', '%' . $request['created_at']. '%');
+            }
+            return response()->json($users);
+        } else {
+            $query = User::query();
+
+            $users = $query->orderBy('id','desc')->paginate(25);
+            // $users = User::all();
+            return response()->json($users);
+        }
+
+
         // if (empty($requestData['name']) && empty($requestData['email']) && empty($requestData['created_at'])) {
             
         // $query = User::query();
@@ -27,7 +51,7 @@ class UsersController extends Controller
         // return response()->json($users);
         // } else {
         //     $users = User::select('*');
-        //     dd($users);
+        //     // dd($users);
         //     if(isset($requestData['name']) && $requestData['name']) {
         //         $users = $users->where('name', 'LIKE', '%' . $request['name']. '%');
         //     }

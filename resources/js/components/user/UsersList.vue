@@ -28,7 +28,7 @@
                 <v-card-text>
                     <v-form>
                             <v-text-field
-                                v-model="name"
+                                v-model="user.name"
                                 label="Search Name *"
                                 autocomplete="off"
                                 prepend-icon="mdi-account"
@@ -37,7 +37,7 @@
                                 class="pt-8"
                             ></v-text-field>
                             <v-text-field
-                                v-model="email"
+                                v-model="user.email"
                                 label="Search Email *"
                                 autocomplete="off"
                                 prepend-icon="mdi-email"
@@ -49,12 +49,13 @@
                                 id="created_at"
                                 label="Search Created date *"
                                 name="created_at"
-                                prepend-icon="mdi-lock"
-                                v-model="created_at"
+                                prepend-icon="mdi-calendar"
+                                v-model="user.created_at"
                                 v-on:keyup.enter="onClickSearchButton"
                                 outlined
                                 type="date"
                                 autocomplete="off"
+                                class="pt-8"
                             />
                     </v-form>
                 </v-card-text>
@@ -191,9 +192,11 @@ export default {
     },
     data() {
         return {
-            name: "",
-            email: "",
-            created_at: "",
+            user: {
+                name: "",
+                email: "",
+                created_at: ""
+            },
             isBtnLoading: false,
             errorEmail: "",
             users: [],
@@ -213,15 +216,12 @@ export default {
             }
 
             this.isBtnLoading = true;
+            // console.log(this.user.name);
 
-            await axios.get("/api/users", {
-                name: this.name,
-                email: this.email,
-                created_at: this.created_at
-            })
+            await axios.get("/api/users", this.user)
             .then(res => {
                 this.users = res.data.data;
-                console.log(res);
+                console.log(res.data.data);
             })
             .catch(function (error) {
             })
@@ -261,7 +261,7 @@ export default {
     },
     computed: {
         isSearchBtnDisabled() {
-            if (!this.name && !this.created_at && !this.email) {
+            if (!this.user.name && !this.user.created_at && !this.user.email) {
                 return true;
             } else {
                 return false;
