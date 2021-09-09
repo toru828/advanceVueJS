@@ -123,9 +123,8 @@ export default {
         isEditBtnDisabled() {
             if (!this.user.name || !this.user.password || !this.user.email) {
                 return true;
-            } else {
-                return false;
             }
+                return false;
         }
     },
     methods: {

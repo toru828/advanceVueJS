@@ -2143,9 +2143,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     isAddBtnDisabled: function isAddBtnDisabled() {
       if (!this.user.name || !this.user.password || !this.user.email) {
         return true;
-      } else {
-        return false;
       }
+
+      return false;
     }
   },
   methods: {
@@ -2331,9 +2331,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     isEditBtnDisabled: function isEditBtnDisabled() {
       if (!this.user.name || !this.user.password || !this.user.email) {
         return true;
-      } else {
-        return false;
       }
+
+      return false;
     }
   },
   methods: {
@@ -2729,15 +2729,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   computed: {
     isSearchBtnDisabled: function isSearchBtnDisabled() {
-      if (!this.user.name && !this.user.email && (!this.user.from || !this.user.to)) {
+      if (!this.user.name && !this.user.email && !this.user.from && !this.user.to) {
         return true;
-      } else if (this.user.from && !this.user.to) {
-        return true;
-      } else if (!this.user.from && this.user.to) {
-        return true;
-      } else {
-        return false;
       }
+
+      if (this.user.from && !this.user.to) {
+        return true;
+      }
+
+      if (!this.user.from && this.user.to) {
+        return true;
+      }
+
+      return false;
     }
   }
 });

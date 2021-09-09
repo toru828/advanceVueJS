@@ -276,15 +276,16 @@ export default {
     },
     computed: {
         isSearchBtnDisabled() {
-            if (!this.user.name && !this.user.email && (!this.user.from || !this.user.to)) {
+            if (!this.user.name && !this.user.email && !this.user.from && !this.user.to) {
                 return true;
-            } else if (this.user.from && !this.user.to) {
-                return true;
-            } else if (!this.user.from && this.user.to) {
-                return true;
-            } else {
-                return false;
             }
+            if (this.user.from && !this.user.to) {
+                return true;
+            }
+            if (!this.user.from && this.user.to) {
+                return true;
+            }
+                return false;
         }
     },
 };
