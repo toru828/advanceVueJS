@@ -93,9 +93,8 @@ export default {
         isLoginBtnDisabled() {
             if (!this.item.email || !this.item.password) {
                 return true;
-            } else {
-                return false;
             }
+            return false;
         }
     },
     methods: {

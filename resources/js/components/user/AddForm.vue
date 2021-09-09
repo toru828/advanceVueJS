@@ -118,7 +118,7 @@ export default {
             if (!this.user.name || !this.user.password || !this.user.email) {
                 return true;
             }
-                return false;
+            return false;
         }
     },
     methods: {
@@ -130,12 +130,12 @@ export default {
             this.isBtnLoading = true;
 
             await axios.post("/api/users", this.user);
-            this.$router.push("/users")
-            .catch(function (error) {
-            })
-            .finally(() => {
-                this.isBtnLoading = false;
-            });
+            this.$router
+                .push("/users")
+                .catch(function(error) {})
+                .finally(() => {
+                    this.isBtnLoading = false;
+                });
         }
     }
 };

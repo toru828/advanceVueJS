@@ -10,7 +10,7 @@
                             :to="{
                                 name: 'AddForm'
                             }"
-                        >Add User
+                            >Add User
                         </router-link>
                     </v-btn>
                 </v-tabs>
@@ -27,55 +27,49 @@
             <v-card class="elevation-12" color="cream">
                 <v-card-text>
                     <v-form>
-                            <v-text-field
-                                v-model="user.name"
-                                label="Search Name *"
-                                autocomplete="off"
-                                prepend-icon="mdi-account"
-                                v-on:keyup.enter="onClickSearchButton"
-                                outlined
-                                class="pt-8"
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="user.email"
-                                label="Search Email *"
-                                autocomplete="off"
-                                prepend-icon="mdi-email"
-                                v-on:keyup.enter="onClickSearchButton"
-                                outlined
-                                class="pt-8"
-                            ></v-text-field>
-                            <v-row>
-                            <v-col
-                                cols="12"
-                                sm="6"
-                            >
-                            <v-text-field
-                                label="Search Created date from *"
-                                prepend-icon="mdi-calendar"
-                                v-model="user.from"
-                                v-on:keyup.enter="onClickSearchButton"
-                                outlined
-                                type="date"
-                                autocomplete="off"
-                                class="pt-8"
-                            />
+                        <v-text-field
+                            v-model="user.name"
+                            label="Search Name *"
+                            autocomplete="off"
+                            prepend-icon="mdi-account"
+                            v-on:keyup.enter="onClickSearchButton"
+                            outlined
+                            class="pt-8"
+                        ></v-text-field>
+                        <v-text-field
+                            v-model="user.email"
+                            label="Search Email *"
+                            autocomplete="off"
+                            prepend-icon="mdi-email"
+                            v-on:keyup.enter="onClickSearchButton"
+                            outlined
+                            class="pt-8"
+                        ></v-text-field>
+                        <v-row>
+                            <v-col cols="12" sm="6">
+                                <v-text-field
+                                    label="Search Created date from *"
+                                    prepend-icon="mdi-calendar"
+                                    v-model="user.from"
+                                    v-on:keyup.enter="onClickSearchButton"
+                                    outlined
+                                    type="date"
+                                    autocomplete="off"
+                                    class="pt-8"
+                                />
                             </v-col>
-                            <v-col
-                                cols="12"
-                                sm="6"
-                            >
-                            <v-text-field
-                                label="Search Created date to *"
-                                v-model="user.to"
-                                v-on:keyup.enter="onClickSearchButton"
-                                outlined
-                                type="date"
-                                autocomplete="off"
-                                class="pt-8"
-                            />
+                            <v-col cols="12" sm="6">
+                                <v-text-field
+                                    label="Search Created date to *"
+                                    v-model="user.to"
+                                    v-on:keyup.enter="onClickSearchButton"
+                                    outlined
+                                    type="date"
+                                    autocomplete="off"
+                                    class="pt-8"
+                                />
                             </v-col>
-                            </v-row>
+                        </v-row>
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
@@ -148,7 +142,6 @@
                                 >
                                     <div class="col-2" cols="2">
                                         {{ user.name }}
-                                        
                                     </div>
                                     <div class="col-2" cols="2">
                                         {{ user.email }}
@@ -192,14 +185,14 @@
                 </v-card>
             </v-card>
         </v-col>
-      <div class="text-center">
-        <v-pagination
-          v-model="page"
-          :length="length"
-          :total-visible="9"
-          @input = "pageChange"
-        ></v-pagination>
-      </div>     
+        <div class="text-center">
+            <v-pagination
+                v-model="page"
+                :length="length"
+                :total-visible="9"
+                @input="pageChange"
+            ></v-pagination>
+        </div>
     </div>
 </template>
 
@@ -207,22 +200,21 @@
 import dayjs from "dayjs";
 export default {
     name: "UsersList",
-    components: {
-    },
+    components: {},
     data() {
         return {
             user: {
                 name: "",
                 email: "",
                 from: "",
-                to: "",
+                to: ""
             },
             isBtnLoading: false,
             users: [],
             page: 1,
             length: 0,
             current_page: 1,
-            last_page: "",
+            last_page: ""
         };
     },
     created() {
@@ -234,22 +226,24 @@ export default {
                 return false;
             }
             this.isBtnLoading = true;
-            await axios.get("/api/users", {params: this.user})
-            .then(res => {
-                this.users = res.data.data;
-            })
-            .catch(function (error) {
-            })
-            .finally(() => {
-                this.isBtnLoading = false;
-            });
+            await axios
+                .get("/api/users", { params: this.user })
+                .then(res => {
+                    this.users = res.data.data;
+                })
+                .catch(function(error) {})
+                .finally(() => {
+                    this.isBtnLoading = false;
+                });
         },
         async getUsersList() {
-            await axios.get(`/api/users?page=${this.current_page}`).then(res => {
-                this.users = res.data.data;
-                this.current_page = res.data.current_page;
-                this.length = res.data.last_page;
-            });
+            await axios
+                .get(`/api/users?page=${this.current_page}`)
+                .then(res => {
+                    this.users = res.data.data;
+                    this.current_page = res.data.current_page;
+                    this.length = res.data.last_page;
+                });
         },
         logout() {
             this.$store.dispatch("logout");
@@ -268,26 +262,33 @@ export default {
         },
         async pageChange(pageNumber) {
             this.current_page = pageNumber;
-            await axios.get(`/api/users?page=${this.current_page}`).then(res => {
-                this.users = res.data.data;
-                this.current_page = res.data.current_page;
-            });
+            await axios
+                .get(`/api/users?page=${this.current_page}`)
+                .then(res => {
+                    this.users = res.data.data;
+                    this.current_page = res.data.current_page;
+                });
         }
     },
     computed: {
         isSearchBtnDisabled() {
-            if (!this.user.name && !this.user.email && !this.user.from && !this.user.to) {
+            if (
+                !this.user.name &&
+                !this.user.email &&
+                !this.user.from &&
+                !this.user.to
+            ) {
                 return true;
             }
-            if (this.user.from && !this.user.to) {
+            if (
+                (this.user.from && !this.user.to) ||
+                (!this.user.from && this.user.to)
+            ) {
                 return true;
             }
-            if (!this.user.from && this.user.to) {
-                return true;
-            }
-                return false;
+            return false;
         }
-    },
+    }
 };
 </script>
 <style>

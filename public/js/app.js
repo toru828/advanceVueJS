@@ -1957,9 +1957,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     isLoginBtnDisabled: function isLoginBtnDisabled() {
       if (!this.item.email || !this.item.password) {
         return true;
-      } else {
-        return false;
       }
+
+      return false;
     }
   },
   methods: {
@@ -2594,13 +2594,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "UsersList",
@@ -2733,11 +2726,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return true;
       }
 
-      if (this.user.from && !this.user.to) {
-        return true;
-      }
-
-      if (!this.user.from && this.user.to) {
+      if (this.user.from && !this.user.to || !this.user.from && this.user.to) {
         return true;
       }
 
@@ -28982,7 +28971,7 @@ var render = function() {
                                         _vm._v(
                                           "\n                                    " +
                                             _vm._s(user.name) +
-                                            "\n                                    \n                                "
+                                            "\n                                "
                                         )
                                       ]
                                     ),
