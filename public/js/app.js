@@ -2731,6 +2731,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     isSearchBtnDisabled: function isSearchBtnDisabled() {
       if (!this.user.name && !this.user.email && (!this.user.from || !this.user.to)) {
         return true;
+      } else if ((this.user.name || this.user.email) && this.user.from && !this.user.to) {
+        return true;
+      } else if ((this.user.name || this.user.email) && !this.user.from && this.user.to) {
+        return true;
       } else {
         return false;
       }
