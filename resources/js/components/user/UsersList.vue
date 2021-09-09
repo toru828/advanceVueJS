@@ -214,11 +214,9 @@ export default {
             if (this.isSearchBtnDisabled === true) {
                 return false;
             }
-
             this.isBtnLoading = true;
             console.log(this.user.name);
-
-            await axios.get("/api/users", this.user)
+            await axios.get("/api/users", {params: this.user})
             .then(res => {
                 
                 this.users = res.data.data;

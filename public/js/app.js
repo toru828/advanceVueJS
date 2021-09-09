@@ -2625,7 +2625,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.isBtnLoading = true;
                 console.log(_this.user.name);
                 _context.next = 6;
-                return axios.get("/api/users", _this.user).then(function (res) {
+                return axios.get("/api/users", {
+                  params: _this.user
+                }).then(function (res) {
                   _this.users = res.data.data;
                   console.log(res.data.data);
                 })["catch"](function (error) {})["finally"](function () {
