@@ -23,7 +23,7 @@
                 </v-tabs>
             </v-col>
         </v-app-bar>
-        <v-col cols="12" sm="8">
+        <v-col cols="12">
             <v-card class="elevation-12" color="cream">
                 <v-card-text>
                     <v-form>
@@ -45,18 +45,37 @@
                                 outlined
                                 class="pt-8"
                             ></v-text-field>
+                            <v-row>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                            >
                             <v-text-field
-                                id="created_at"
-                                label="Search Created date *"
-                                name="created_at"
+                                label="Search Created date from *"
                                 prepend-icon="mdi-calendar"
-                                v-model="user.created_at"
+                                v-model="user.from"
                                 v-on:keyup.enter="onClickSearchButton"
                                 outlined
                                 type="date"
                                 autocomplete="off"
                                 class="pt-8"
                             />
+                            </v-col>
+                            <v-col
+                                cols="12"
+                                sm="6"
+                            >
+                            <v-text-field
+                                label="Search Created date to *"
+                                v-model="user.to"
+                                v-on:keyup.enter="onClickSearchButton"
+                                outlined
+                                type="date"
+                                autocomplete="off"
+                                class="pt-8"
+                            />
+                            </v-col>
+                            </v-row>
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
@@ -129,6 +148,7 @@
                                 >
                                     <div class="col-2" cols="2">
                                         {{ user.name }}
+                                        
                                     </div>
                                     <div class="col-2" cols="2">
                                         {{ user.email }}
@@ -185,7 +205,6 @@
 
 <script>
 import dayjs from "dayjs";
-import Vue from "vue";
 export default {
     name: "UsersList",
     components: {
@@ -195,10 +214,10 @@ export default {
             user: {
                 name: "",
                 email: "",
-                created_at: ""
+                from: "",
+                to: "",
             },
             isBtnLoading: false,
-            errorEmail: "",
             users: [],
             page: 1,
             length: 0,
@@ -215,12 +234,9 @@ export default {
                 return false;
             }
             this.isBtnLoading = true;
-            console.log(this.user.name);
             await axios.get("/api/users", {params: this.user})
             .then(res => {
-                
                 this.users = res.data.data;
-                console.log(res.data.data);
             })
             .catch(function (error) {
             })
@@ -260,7 +276,7 @@ export default {
     },
     computed: {
         isSearchBtnDisabled() {
-            if (!this.user.name && !this.user.created_at && !this.user.email) {
+            if (!this.user.name && !this.user.email && (!this.user.from || !this.user.to)) {
                 return true;
             } else {
                 return false;

@@ -14,69 +14,22 @@ class UsersController extends Controller
 
     public function index(Request $request)
     {
-        $requestData = $request->only('name', 'email', 'created_at');
+        $requestData = $request->only('name', 'email', 'from', 'to');
+
         $query = User::query();
+
         if (!empty($requestData['name'])) {
             $query->where('name', 'LIKE', '%' . $requestData['name']. '%');
         }
         if (!empty($requestData['email'])) {
             $query->where('email', 'LIKE', '%' . $requestData['email']. '%');
         }
-        if (!empty(isset($requestData['created_at']))) {
-            $query->where('created_at', 'FROM', $requestData['created_at']);    // 日時を部分一致にする必要あるのかは疑問だが。（日時はFrom - Toで検索することが多い）
+        if (!empty($requestData['from']) && !empty($requestData['to'])) {
+            $query->whereBetween('created_at', [$requestData['from'], $requestData['to'] ]);
         }
+        
         $users = $query->orderBy('id','desc')->paginate(25);
             return response()->json($users);
-
-        // $requestData = $request->only('name', 'email', 'created_at');
-        // // dd($requestData);
-        // // $data = $this->userService->getList($requestData);
-        // // return $this->success($data);
-
-
-        // if ((isset($requestData['name']) && $requestData['name']) || (isset($requestData['email']) && $requestData['email']) || (isset($requestData['created_at']) && $requestData['created_at'])) {
-        //     $users = User::select('*');
-        //     // dd($users);
-        //     if(isset($requestData['name']) && $requestData['name']) {
-        //         $users = $users->where('name', 'LIKE', '%' . $requestData['name']. '%');
-        //     }
-        //     if(isset($requestData['email']) && $requestData['email']) {
-        //         $users = $users->where('email', 'LIKE', '%' . $requestData['email']. '%');
-        //     }
-        //     if(isset($requestData['created_at']) && $requestData['created_at']) {
-        //         $users = $users->where('created_at', 'LIKE', '%' . $requestData['created_at']. '%');
-        //     }
-        //     return response()->json($users->paginate(25));
-        // } else {
-        //     $query = User::query();
-
-        //     $users = $query->orderBy('id','desc')->paginate(25);
-        //     // $users = User::all();
-        //     return response()->json($users);
-        // }
-
-
-        // if (empty($requestData['name']) && empty($requestData['email']) && empty($requestData['created_at'])) {
-            
-        // $query = User::query();
-
-        // $users = $query->orderBy('id','desc')->paginate(25);
-        // // $users = User::all();
-        // return response()->json($users);
-        // } else {
-        //     $users = User::select('*');
-        //     // dd($users);
-        //     if(isset($requestData['name']) && $requestData['name']) {
-        //         $users = $users->where('name', 'LIKE', '%' . $request['name']. '%');
-        //     }
-        //     if(isset($requestData['email']) && $requestData['email']) {
-        //         $users = $users->where('email', 'LIKE', '%' . $request['email']. '%');
-        //     }
-        //     if(isset($requestData['created_at']) && $requestData['created_at']) {
-        //         $users = $users->where('created_at', 'LIKE', '%' . $request['created_at']. '%');
-        //     }
-        //     return response()->json($users);
-        // }
     }
 
     /**

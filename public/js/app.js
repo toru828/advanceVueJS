@@ -2581,7 +2581,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "UsersList",
@@ -2591,10 +2610,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       user: {
         name: "",
         email: "",
-        created_at: ""
+        from: "",
+        to: ""
       },
       isBtnLoading: false,
-      errorEmail: "",
       users: [],
       page: 1,
       length: 0,
@@ -2623,18 +2642,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 _this.isBtnLoading = true;
-                console.log(_this.user.name);
-                _context.next = 6;
+                _context.next = 5;
                 return axios.get("/api/users", {
                   params: _this.user
                 }).then(function (res) {
                   _this.users = res.data.data;
-                  console.log(res.data.data);
                 })["catch"](function (error) {})["finally"](function () {
                   _this.isBtnLoading = false;
                 });
 
-              case 6:
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -2712,7 +2729,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   computed: {
     isSearchBtnDisabled: function isSearchBtnDisabled() {
-      if (!this.user.name && !this.user.created_at && !this.user.email) {
+      if (!this.user.name && !this.user.email && (!this.user.from || !this.user.to)) {
         return true;
       } else {
         return false;
@@ -28613,7 +28630,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "v-col",
-        { attrs: { cols: "12", sm: "8" } },
+        { attrs: { cols: "12" } },
         [
           _c(
             "v-card",
@@ -28699,45 +28716,100 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _c("v-text-field", {
-                        staticClass: "pt-8",
-                        attrs: {
-                          id: "created_at",
-                          label: "Search Created date *",
-                          name: "created_at",
-                          "prepend-icon": "mdi-calendar",
-                          outlined: "",
-                          type: "date",
-                          autocomplete: "off"
-                        },
-                        on: {
-                          keyup: function($event) {
-                            if (
-                              !$event.type.indexOf("key") &&
-                              _vm._k(
-                                $event.keyCode,
-                                "enter",
-                                13,
-                                $event.key,
-                                "Enter"
-                              )
-                            ) {
-                              return null
-                            }
-                            return _vm.onClickSearchButton.apply(
-                              null,
-                              arguments
-                            )
-                          }
-                        },
-                        model: {
-                          value: _vm.user.created_at,
-                          callback: function($$v) {
-                            _vm.$set(_vm.user, "created_at", $$v)
-                          },
-                          expression: "user.created_at"
-                        }
-                      })
+                      _c(
+                        "v-row",
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6" } },
+                            [
+                              _c("v-text-field", {
+                                staticClass: "pt-8",
+                                attrs: {
+                                  label: "Search Created date from *",
+                                  "prepend-icon": "mdi-calendar",
+                                  outlined: "",
+                                  type: "date",
+                                  autocomplete: "off"
+                                },
+                                on: {
+                                  keyup: function($event) {
+                                    if (
+                                      !$event.type.indexOf("key") &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "enter",
+                                        13,
+                                        $event.key,
+                                        "Enter"
+                                      )
+                                    ) {
+                                      return null
+                                    }
+                                    return _vm.onClickSearchButton.apply(
+                                      null,
+                                      arguments
+                                    )
+                                  }
+                                },
+                                model: {
+                                  value: _vm.user.from,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.user, "from", $$v)
+                                  },
+                                  expression: "user.from"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6" } },
+                            [
+                              _c("v-text-field", {
+                                staticClass: "pt-8",
+                                attrs: {
+                                  label: "Search Created date to *",
+                                  outlined: "",
+                                  type: "date",
+                                  autocomplete: "off"
+                                },
+                                on: {
+                                  keyup: function($event) {
+                                    if (
+                                      !$event.type.indexOf("key") &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "enter",
+                                        13,
+                                        $event.key,
+                                        "Enter"
+                                      )
+                                    ) {
+                                      return null
+                                    }
+                                    return _vm.onClickSearchButton.apply(
+                                      null,
+                                      arguments
+                                    )
+                                  }
+                                },
+                                model: {
+                                  value: _vm.user.to,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.user, "to", $$v)
+                                  },
+                                  expression: "user.to"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
                     ],
                     1
                   )
@@ -28902,7 +28974,7 @@ var render = function() {
                                         _vm._v(
                                           "\n                                    " +
                                             _vm._s(user.name) +
-                                            "\n                                "
+                                            "\n                                    \n                                "
                                         )
                                       ]
                                     ),
