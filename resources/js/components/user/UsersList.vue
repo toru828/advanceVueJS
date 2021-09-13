@@ -10,7 +10,7 @@
                             :to="{
                                 name: 'AddForm'
                             }"
-                        >Add User
+                            >Add User
                         </router-link>
                     </v-btn>
                 </v-tabs>
@@ -23,6 +23,68 @@
                 </v-tabs>
             </v-col>
         </v-app-bar>
+        <v-col cols="12">
+            <v-card class="elevation-12" color="cream">
+                <v-card-text>
+                    <v-form>
+                        <v-text-field
+                            v-model="user.name"
+                            label="Search Name *"
+                            autocomplete="off"
+                            prepend-icon="mdi-account"
+                            v-on:keyup.enter="onClickSearchButton"
+                            outlined
+                            class="pt-8"
+                        ></v-text-field>
+                        <v-text-field
+                            v-model="user.email"
+                            label="Search Email *"
+                            autocomplete="off"
+                            prepend-icon="mdi-email"
+                            v-on:keyup.enter="onClickSearchButton"
+                            outlined
+                            class="pt-8"
+                        ></v-text-field>
+                        <v-row>
+                            <v-col cols="12" sm="6">
+                                <v-text-field
+                                    label="Search Created date from *"
+                                    prepend-icon="mdi-calendar"
+                                    v-model="user.from"
+                                    v-on:keyup.enter="onClickSearchButton"
+                                    outlined
+                                    type="date"
+                                    autocomplete="off"
+                                    class="pt-8"
+                                />
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                                <v-text-field
+                                    label="Search Created date to *"
+                                    v-model="user.to"
+                                    v-on:keyup.enter="onClickSearchButton"
+                                    outlined
+                                    type="date"
+                                    autocomplete="off"
+                                    class="pt-8"
+                                />
+                            </v-col>
+                        </v-row>
+                    </v-form>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer />
+                    <v-btn
+                        color="primary"
+                        :disabled="isSearchBtnDisabled"
+                        @click="onClickSearchButton"
+                        :loading="isBtnLoading"
+                    >
+                        Search User
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-col>
         <v-col cols="12" style="padding-top: 0">
             <v-card cols="12" color="cream">
                 <v-card color="cream" flat>
@@ -123,29 +185,65 @@
                 </v-card>
             </v-card>
         </v-col>
+        <div class="text-center">
+            <v-pagination
+                v-model="page"
+                :length="length"
+                :total-visible="9"
+                @input="pageChange"
+            ></v-pagination>
+        </div>
     </div>
 </template>
 
 <script>
 import dayjs from "dayjs";
-import Vue from "vue";
 export default {
     name: "UsersList",
-    components: {
-    },
+    components: {},
     data() {
         return {
-            users: []
+            user: {
+                name: "",
+                email: "",
+                from: "",
+                to: ""
+            },
+            isBtnLoading: false,
+            users: [],
+            page: 1,
+            length: 0,
+            current_page: 1,
+            last_page: ""
         };
     },
     created() {
         this.getUsersList();
     },
     methods: {
+        async onClickSearchButton() {
+            if (this.isSearchBtnDisabled === true) {
+                return false;
+            }
+            this.isBtnLoading = true;
+            await axios
+                .get("/api/users", { params: this.user })
+                .then(res => {
+                    this.users = res.data.data;
+                })
+                .catch(function(error) {})
+                .finally(() => {
+                    this.isBtnLoading = false;
+                });
+        },
         async getUsersList() {
-            await axios.get("/api/users").then(res => {
-                this.users = res.data.data;
-            });
+            await axios
+                .get(`/api/users?page=${this.current_page}`)
+                .then(res => {
+                    this.users = res.data.data;
+                    this.current_page = res.data.current_page;
+                    this.length = res.data.last_page;
+                });
         },
         logout() {
             this.$store.dispatch("logout");
@@ -161,6 +259,34 @@ export default {
                     this.$router.go({ path: "/users", force: true });
                 });
             }
+        },
+        async pageChange(pageNumber) {
+            this.current_page = pageNumber;
+            await axios
+                .get(`/api/users?page=${this.current_page}`)
+                .then(res => {
+                    this.users = res.data.data;
+                    this.current_page = res.data.current_page;
+                });
+        }
+    },
+    computed: {
+        isSearchBtnDisabled() {
+            if (
+                !this.user.name &&
+                !this.user.email &&
+                !this.user.from &&
+                !this.user.to
+            ) {
+                return true;
+            }
+            if (
+                (this.user.from && !this.user.to) ||
+                (!this.user.from && this.user.to)
+            ) {
+                return true;
+            }
+            return false;
         }
     }
 };

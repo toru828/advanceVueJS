@@ -14,20 +14,22 @@ class UsersController extends Controller
 
     public function index(Request $request)
     {
+        $requestData = $request->only('name', 'email', 'from', 'to');
 
-        // $requestData = $request->all();
-        // dd($requestData);
-        // $data = $this->userService->getList($requestData);
-        // return $this->success($data);
-
-        
         $query = User::query();
 
-        $users = $query->orderBy('id','desc')->paginate(1);
-        // dd($users);
-        // $users = User::all();
-        return response()->json($users);
-
+        if (!empty($requestData['name'])) {
+            $query->where('name', 'LIKE', '%' . $requestData['name']. '%');
+        }
+        if (!empty($requestData['email'])) {
+            $query->where('email', 'LIKE', '%' . $requestData['email']. '%');
+        }
+        if (!empty($requestData['from']) && !empty($requestData['to'])) {
+            $query->whereBetween('created_at', [$requestData['from'], $requestData['to'] ]);
+        }
+        
+        $users = $query->orderBy('id','desc')->paginate(25);
+            return response()->json($users);
     }
 
     /**
@@ -64,6 +66,7 @@ class UsersController extends Controller
     public function update($id, UserPutRequest $request)
     {
         $requestData = $request->only('name', 'email', 'password');
+        dd($requestData);
         if($requestData['password']) {
             $requestData['password'] = bcrypt($requestData['password']);
         } else {

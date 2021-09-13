@@ -123,9 +123,8 @@ export default {
         isEditBtnDisabled() {
             if (!this.user.name || !this.user.password || !this.user.email) {
                 return true;
-            } else {
-                return false;
             }
+            return false;
         }
     },
     methods: {
@@ -137,12 +136,12 @@ export default {
             this.isBtnLoading = true;
 
             await axios.put("/api/users/" + this.$route.params.id, this.user);
-            this.$router.push("/users")
-            .catch(function (error) {
-            })
-            .finally(() => {
-                this.isBtnLoading = false;
-            });
+            this.$router
+                .push("/users")
+                .catch(function(error) {})
+                .finally(() => {
+                    this.isBtnLoading = false;
+                });
         }
     }
 };

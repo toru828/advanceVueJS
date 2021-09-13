@@ -1957,9 +1957,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     isLoginBtnDisabled: function isLoginBtnDisabled() {
       if (!this.item.email || !this.item.password) {
         return true;
-      } else {
-        return false;
       }
+
+      return false;
     }
   },
   methods: {
@@ -2143,9 +2143,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     isAddBtnDisabled: function isAddBtnDisabled() {
       if (!this.user.name || !this.user.password || !this.user.email) {
         return true;
-      } else {
-        return false;
       }
+
+      return false;
     }
   },
   methods: {
@@ -2331,9 +2331,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     isEditBtnDisabled: function isEditBtnDisabled() {
       if (!this.user.name || !this.user.password || !this.user.email) {
         return true;
-      } else {
-        return false;
       }
+
+      return false;
     }
   },
   methods: {
@@ -2524,21 +2524,101 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "UsersList",
   components: {},
   data: function data() {
     return {
-      users: []
+      user: {
+        name: "",
+        email: "",
+        from: "",
+        to: ""
+      },
+      isBtnLoading: false,
+      users: [],
+      page: 1,
+      length: 0,
+      current_page: 1,
+      last_page: ""
     };
   },
   created: function created() {
     this.getUsersList();
   },
   methods: {
-    getUsersList: function getUsersList() {
+    onClickSearchButton: function onClickSearchButton() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
@@ -2546,17 +2626,53 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return axios.get("/api/users").then(function (res) {
-                  _this.users = res.data.data;
-                });
+                if (!(_this.isSearchBtnDisabled === true)) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return", false);
 
               case 2:
+                _this.isBtnLoading = true;
+                _context.next = 5;
+                return axios.get("/api/users", {
+                  params: _this.user
+                }).then(function (res) {
+                  _this.users = res.data.data;
+                })["catch"](function (error) {})["finally"](function () {
+                  _this.isBtnLoading = false;
+                });
+
+              case 5:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee);
+      }))();
+    },
+    getUsersList: function getUsersList() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.get("/api/users?page=".concat(_this2.current_page)).then(function (res) {
+                  _this2.users = res.data.data;
+                  _this2.current_page = res.data.current_page;
+                  _this2.length = res.data.last_page;
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
       }))();
     },
     logout: function logout() {
@@ -2567,18 +2683,54 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return dayjs__WEBPACK_IMPORTED_MODULE_1___default()(date).format("YYYY-MM-DD HH:mm:ss");
     },
     onClickDeleteButton: function onClickDeleteButton(userID) {
-      var _this2 = this;
+      var _this3 = this;
 
       var check = window.confirm("Do you want to delete it?");
 
       if (check) {
         axios["delete"]("/api/users/" + userID).then(function () {
-          _this2.$router.go({
+          _this3.$router.go({
             path: "/users",
             force: true
           });
         });
       }
+    },
+    pageChange: function pageChange(pageNumber) {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _this4.current_page = pageNumber;
+                _context3.next = 3;
+                return axios.get("/api/users?page=".concat(_this4.current_page)).then(function (res) {
+                  _this4.users = res.data.data;
+                  _this4.current_page = res.data.current_page;
+                });
+
+              case 3:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    }
+  },
+  computed: {
+    isSearchBtnDisabled: function isSearchBtnDisabled() {
+      if (!this.user.name && !this.user.email && !this.user.from && !this.user.to) {
+        return true;
+      }
+
+      if (this.user.from && !this.user.to || !this.user.from && this.user.to) {
+        return true;
+      }
+
+      return false;
     }
   }
 });
@@ -28475,6 +28627,226 @@ var render = function() {
       _vm._v(" "),
       _c(
         "v-col",
+        { attrs: { cols: "12" } },
+        [
+          _c(
+            "v-card",
+            { staticClass: "elevation-12", attrs: { color: "cream" } },
+            [
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-form",
+                    [
+                      _c("v-text-field", {
+                        staticClass: "pt-8",
+                        attrs: {
+                          label: "Search Name *",
+                          autocomplete: "off",
+                          "prepend-icon": "mdi-account",
+                          outlined: ""
+                        },
+                        on: {
+                          keyup: function($event) {
+                            if (
+                              !$event.type.indexOf("key") &&
+                              _vm._k(
+                                $event.keyCode,
+                                "enter",
+                                13,
+                                $event.key,
+                                "Enter"
+                              )
+                            ) {
+                              return null
+                            }
+                            return _vm.onClickSearchButton.apply(
+                              null,
+                              arguments
+                            )
+                          }
+                        },
+                        model: {
+                          value: _vm.user.name,
+                          callback: function($$v) {
+                            _vm.$set(_vm.user, "name", $$v)
+                          },
+                          expression: "user.name"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        staticClass: "pt-8",
+                        attrs: {
+                          label: "Search Email *",
+                          autocomplete: "off",
+                          "prepend-icon": "mdi-email",
+                          outlined: ""
+                        },
+                        on: {
+                          keyup: function($event) {
+                            if (
+                              !$event.type.indexOf("key") &&
+                              _vm._k(
+                                $event.keyCode,
+                                "enter",
+                                13,
+                                $event.key,
+                                "Enter"
+                              )
+                            ) {
+                              return null
+                            }
+                            return _vm.onClickSearchButton.apply(
+                              null,
+                              arguments
+                            )
+                          }
+                        },
+                        model: {
+                          value: _vm.user.email,
+                          callback: function($$v) {
+                            _vm.$set(_vm.user, "email", $$v)
+                          },
+                          expression: "user.email"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6" } },
+                            [
+                              _c("v-text-field", {
+                                staticClass: "pt-8",
+                                attrs: {
+                                  label: "Search Created date from *",
+                                  "prepend-icon": "mdi-calendar",
+                                  outlined: "",
+                                  type: "date",
+                                  autocomplete: "off"
+                                },
+                                on: {
+                                  keyup: function($event) {
+                                    if (
+                                      !$event.type.indexOf("key") &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "enter",
+                                        13,
+                                        $event.key,
+                                        "Enter"
+                                      )
+                                    ) {
+                                      return null
+                                    }
+                                    return _vm.onClickSearchButton.apply(
+                                      null,
+                                      arguments
+                                    )
+                                  }
+                                },
+                                model: {
+                                  value: _vm.user.from,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.user, "from", $$v)
+                                  },
+                                  expression: "user.from"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6" } },
+                            [
+                              _c("v-text-field", {
+                                staticClass: "pt-8",
+                                attrs: {
+                                  label: "Search Created date to *",
+                                  outlined: "",
+                                  type: "date",
+                                  autocomplete: "off"
+                                },
+                                on: {
+                                  keyup: function($event) {
+                                    if (
+                                      !$event.type.indexOf("key") &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "enter",
+                                        13,
+                                        $event.key,
+                                        "Enter"
+                                      )
+                                    ) {
+                                      return null
+                                    }
+                                    return _vm.onClickSearchButton.apply(
+                                      null,
+                                      arguments
+                                    )
+                                  }
+                                },
+                                model: {
+                                  value: _vm.user.to,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.user, "to", $$v)
+                                  },
+                                  expression: "user.to"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        color: "primary",
+                        disabled: _vm.isSearchBtnDisabled,
+                        loading: _vm.isBtnLoading
+                      },
+                      on: { click: _vm.onClickSearchButton }
+                    },
+                    [
+                      _vm._v(
+                        "\n                    Search User\n                "
+                      )
+                    ]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-col",
         { staticStyle: { "padding-top": "0" }, attrs: { cols: "12" } },
         [
           _c(
@@ -28736,6 +29108,25 @@ var render = function() {
             ],
             1
           )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "text-center" },
+        [
+          _c("v-pagination", {
+            attrs: { length: _vm.length, "total-visible": 9 },
+            on: { input: _vm.pageChange },
+            model: {
+              value: _vm.page,
+              callback: function($$v) {
+                _vm.page = $$v
+              },
+              expression: "page"
+            }
+          })
         ],
         1
       )
