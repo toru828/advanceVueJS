@@ -66,7 +66,6 @@ class UsersController extends Controller
     public function update($id, UserPutRequest $request)
     {
         $requestData = $request->only('name', 'email', 'password');
-        dd($requestData);
         if($requestData['password']) {
             $requestData['password'] = bcrypt($requestData['password']);
         } else {
